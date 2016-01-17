@@ -1,0 +1,176 @@
+Onderaan staat de code die ik heb gebruikt om mijn apparaat aan het werk te krijgen. BELANGRIJK: Als je dit wil laten werken 
+bij jouw project, zorg er dan voor dat je een beetje aan de benaming gaat sleutelen van je bestanden. Houd er ook rekening mee dat je 
+ten alle tijden de seriele monitor open moet laten staan om het programma te laten werken. 
+
+#include <Process.h>
+#include <FileIO.h>
+
+int ledPin1 = 8; // kies de pin van de Led
+int ledPin2 = 9; // kies de pin van de Led
+
+int inPin1 = 2; // kies de input voor de pushbutton
+int inPin2 = 4; // kies de input voor de pushbutton
+
+int knipperTijd = 6000; // regelt de tijd van het knipperen van de lampjes
+int knipperSpeed = 5000; // regelt de snelheid van het knipperen van de lampjes
+int tijdAanblijven = 10000; // zorgt ervoor dat de lampjes een bepaalde tijd aan blijven
+unsigned long nowTime = 0;
+int kTime = 0;
+bool klaar = false;
+bool lampje1 = false;
+
+String stdurl = "madplay /mnt/sda1/"; // zorgt ervoor dat de Arduino je sd kaart herkent en er bestanden van kan afspelen. 
+
+// hieronder de code om de lampjes te laten werken
+
+String lerenkennen[14];
+byte geweest_leren[4];
+byte geweest_leren_counter = 1;
+String flirt[14];
+byte geweest_flirt[4];
+byte geweest_flirt_counter = 1;
+byte welkeknop = 0; Process p;
+//p.runShellCommandAsynchronously("madplay /mnt/sda1/spel4.mp3");
+void setup() {
+  pinMode (ledPin1, OUTPUT); // maakt Led een output
+  pinMode (ledPin2, OUTPUT); // maakt Led een output
+  
+  pinMode (inPin1, INPUT); // maakt pushbutton een input
+  pinMode (inPin2, INPUT); // maakt pushbutton een input
+  Bridge.begin();
+  Console.begin();
+  Serial.begin(9600);
+  while(!Serial);
+  
+  // onderaan staat de code om de bestandsnamen te vinden op je SD kaart.
+
+  for(int i = 0; i < 14; i++){
+    lerenkennen[i] = stdurl + "/lerenkennen/" +"ken" + (i + 1) + ".mp3"; 
+    Serial.println(lerenkennen[i]);
+  }
+  geweest_leren[0] = 100;
+  for(int i = 0; i < 14; i++){
+    flirt[i] = stdurl + "/flirten/" + (i + 1) + ".mp3";
+    Serial.println(flirt[i]);
+  }
+  flirt[0] = 100;
+  randomSeed(analogRead(0));
+  Serial.println("OK");
+}
+
+void lerenkennen_do(){
+  bool good = false;
+  byte rr = 0;
+  while(!good){
+    int r = random(14);
+    bool al = false;
+    for(int i = 0; i < geweest_leren_counter; i++){
+      if(geweest_leren[i] == r)
+        al = true;
+    }
+    if(!al){
+      good = true;
+      rr = r;
+    }
+  }
+  p.runShellCommandAsynchronously(lerenkennen[rr + 1]);
+  geweest_leren_counter++;
+  if(geweest_leren_counter > 3)
+    geweest_leren_counter = 0;
+  geweest_leren[geweest_leren_counter] = rr;
+}
+
+void flirt_do(){
+  bool good = false;
+  byte rr = 0;
+  while(!good){
+    int r = random(14);
+    bool al = false;
+    for(int i = 0; i < geweest_flirt_counter; i++){
+      if(geweest_flirt[i] == r)
+        al = true;
+    }
+    if(!al){
+      good = true;
+      rr = r;
+    }
+  }
+  p.runShellCommandAsynchronously(flirt[rr + 1]);
+  geweest_flirt_counter++;
+  if(geweest_flirt_counter > 3)
+    geweest_flirt_counter = 0;
+  geweest_flirt[geweest_flirt_counter] = rr;
+}
+
+void gedrukt(){                 // code voor wat er gebeurd als je op de knop klikt. 
+  nowTime = millis();
+  lampje1 = true;
+  klaar = false;
+  digitalWrite(ledPin1, HIGH);
+}
+
+void knipper(){    // nog meer code voor het knipperen van de lampjes. 
+  if(millis() < nowTime + knipperTijd){
+    kTime++;
+    if(kTime > knipperSpeed){
+      kTime = 0;
+      if(lampje1){
+        lampje1 = false;
+        digitalWrite(ledPin2, HIGH);
+        digitalWrite(ledPin1, LOW);
+      }else{
+        lampje1 = true;
+        digitalWrite(ledPin1, HIGH);
+        digitalWrite(ledPin2, LOW);
+      }
+    }
+  }else{
+    //Serial.println("else");
+    if(!klaar){
+      int r = random(10);
+      Serial.println(r);
+      if(r < 5){
+        digitalWrite(ledPin1, HIGH);
+        digitalWrite(ledPin2, LOW);
+      }else{
+        digitalWrite(ledPin2, HIGH);
+        digitalWrite(ledPin1, LOW);
+      }
+      if(welkeknop == 1)
+        lerenkennen_do();
+      else
+        flirt_do();
+      klaar = true;
+    }
+  }
+}
+
+// hieronder nog meer code om de lampjes te laten werken/knipperen.
+
+void loop() {
+  //digitalWrite(ledPin1, LOW); // doet de Led UIT
+  //digitalWrite(ledPin2, LOW); // doet de Led UIT
+
+   // leest input value
+  if (digitalRead(inPin1) == HIGH) { // checkt of de input HIGHT is bij button
+    //digitalWrite(ledPin1, HIGH); // doet de led AAN
+    welkeknop = 1;
+    gedrukt();
+  }
+  else
+  {
+    //digitalWrite(ledPin1, LOW); // doet de Led LOW
+  }
+
+   if (digitalRead(inPin2) == HIGH) { // checkt of de input HIGHT is bij button
+    //digitalWrite(ledPin2, HIGH); // doet de led AAN
+    welkeknop = 2;
+    gedrukt();
+  }
+  else
+  {
+    //digitalWrite(ledPin2, LOW); // doet de Led LOW
+  }
+  knipper();
+  
+}
