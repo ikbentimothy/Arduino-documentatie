@@ -1,0 +1,30 @@
+Handleiding hoe je dit project bouwt:
+
+De techniek achter mijn idee is vrij simpel, 
+er moeten namelijk 2 lampjes aangesloten worden aan een arduino en ik moest een manier vinden om geluid te kunnen produceren. 
+
+Na het aansluiten van de twee lampjes en de twee knopjes heb ik gezocht naar een manier om geluid uit mijn Arduino te krijgen. 
+Het bleek duur om een mp3 Shield te kopen voor een Arduino, dus ik zocht naar alternatieven. 
+Nou bleek er een te zijn. Er stond op internet een manier om dit te doen, deze kunt u vinden op
+
+http://dev.mikamai.com/post/69775973742/arduino-y%C3%BAn-with-sound-the-supereasy-way
+
+Op deze site wordt stapsgewijs uitgelegd hoe je goedkoper geluid uit je arduino kunt krijgen. 
+Ik heb vervolgens mijn Arduino aan wifi gekoppeld en een programma op mijn arduino gedownload, 
+namelijk Putty. Dit is een programma die iemand heeft geschreven zodat je geluid werkend kan krijgen op een arduino. 
+De link :
+http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
+
+Na het downloaden en openen van het Putty programma heb ik het IP adres van mijn Arduino ingevult
+en de laatste update uitgevoerd. 
+Toen ik dit had gedaan kocht ik een simpele USB geluidskaart.
+Daarnaast kocht ik een goedkope bluetooth speaker bij de action. Ik heb de speaker uit elkaar geschroeft 
+en het moederbordje en batterij eruit gehaald. Wat over was waren een paar draadjes. Deze heb ik aan andere 
+draadjes vastgemaakt, en die heb ik vervolgens aan het uiteinde van oortjes input gesoldeerd. Die input kon 
+ik in de USB geluidskaart steken en die stak ik vervolgens weer in mijn Arduino. 
+
+Daarna heb ik de arduino zo geprogrammeerd dat elke keer als je op een van de twee knopjes klikt, 
+ze allebei voor een paar seconden gaan knipperen. Uiteindelijk blijft er random 1 lampje aan. 
+Hierna speelt de speaker random een mp3 geluidsfragment af (een vraag). De code hiervan kunt u vinden op mijn Github pagina. 
+https://github.com/ikbentimothy/Arduino-documentatie
+
