@@ -28,3 +28,10 @@ ze allebei voor een paar seconden gaan knipperen. Uiteindelijk blijft er random 
 Hierna speelt de speaker random een mp3 geluidsfragment af (een vraag). De code hiervan kunt u vinden op mijn Github pagina. 
 https://github.com/ikbentimothy/Arduino-documentatie
 
+Op het laatste heb ik mijn Arduino in een doosje gestopt. 
+Ik had geen tijd meer om het er grafisch mooi uit te laten zien, ik was niet al te best bezig met het plannen.
+Ik wilde dat het in ieder geval functioneel goed zou werken, daar heb ik dan ook mijn focus op gezet. 
+Ik heb twee gaatjes gemaakt aan de zeikanten zodat daar de lichtjes uit konden komen, en een groot gat aan 
+de bovenkant zodat het speakergeluid uit het doosje kan komen. Daarnaast heb ik onderaan twee gaatjes gemaakt 
+zodat ik de knopjes eruit kon halen. Die heb ik vervolgens in een stukje karton gezet zodat de knopjes een stuk werden vergroot. 
+
